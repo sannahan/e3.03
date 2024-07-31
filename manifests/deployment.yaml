@@ -1,0 +1,48 @@
+apiVersion: apps/v1
+kind: Deployment
+metadata:
+  namespace: project
+  name: project-dep
+spec:
+  replicas: 1
+  strategy:
+    type: Recreate
+  selector:
+    matchLabels:
+      app: project
+  template:
+    metadata:
+      labels:
+        app: project
+    spec:
+      volumes:
+        - name: image-volume
+          persistentVolumeClaim:
+            claimName: image-claim
+      containers:
+        - name: todo-app
+          image: APP-PROJECT/IMAGE
+          env:
+          - name: PORT
+            value: "8082"
+          - name: BACKEND_URL
+            value: "http://todo-backend-svc:2346/todos"
+          volumeMounts:
+          - name: image-volume
+            mountPath: /usr/src/app/files
+        - name: todo-backend
+          image: BACKEND-PROJECT/IMAGE
+          env:
+          - name: PORT
+            value: "8085"
+          - name: PGHOST
+            value: postgres-svc
+          - name: PGDATABASE
+            value: project
+          - name: PGUSER
+            value: admin
+          - name: PGPASSWORD
+            valueFrom:
+              secretKeyRef:
+                name: postgres-password
+                key: POSTGRES_PASSWORD

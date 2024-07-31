@@ -1,0 +1,18 @@
+services:
+  todo-backend:
+    container_name: "todo-backend"
+    build: ./todo-backend
+    ports:
+      - "8084:8084"
+    depends_on:
+      postgres:
+        condition: service_started
+  postgres:
+    container_name: "postgres"
+    image: "postgres:13.0"
+    ports:
+      - "5432:5432"
+    environment:
+      POSTGRES_DB: project
+      POSTGRES_USER: admin
+      POSTGRES_PASSWORD: mydockerpassword

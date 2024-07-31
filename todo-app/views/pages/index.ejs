@@ -1,0 +1,16 @@
+<!DOCTYPE html>
+<html lang="en">
+    <body>
+        <h1>TODO app</h1>
+        <img src="data:image/jpeg;base64,<%= image %>" alt="Image">
+        <form id="todoForm" action="/" method="POST">
+            <input type="text" id="todoInput" name="todoInput" maxlength="140">
+            <input type="submit" value="Create TODO">
+        </form>
+        <ul>
+            <% for (var i = 0; i < todos.length ; i++) { %>
+                <li> <%= todos[i].todo %> </li>
+            <% } %>
+        </ul>
+    </body>
+</html>
