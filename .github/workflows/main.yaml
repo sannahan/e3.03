@@ -9,7 +9,7 @@ env:
   GKE_ZONE: europe-north1-b
   APP_IMAGE: todo-app
   BACKEND_IMAGE: todo-backend
-  SERVICE: project-dep
+  SERVICE: project
   BRANCH: ${{ github.ref_name }}
 
 jobs:
