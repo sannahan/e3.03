@@ -14,6 +14,7 @@ env:
 
 jobs:
   build-publish-deploy:
+    environment: deploy
     name: Build, Publish and Deploy
     runs-on: ubuntu-latest
 
@@ -31,14 +32,14 @@ jobs:
       - name: 'Use gcloud CLI'
         run: gcloud info
 
+      - run: gcloud --quiet auth configure-docker
+
       - name: 'Get GKE credentials'
-        uses: google-github-actions/get-gke-credentials@v2
+        uses: 'google-github-actions/get-gke-credentials@v2'
         with:
           cluster_name: '${{ env.GKE_CLUSTER }}'
           project_id: '${{ env.PROJECT_ID }}'
           location: '${{ env.GKE_ZONE }}'
-
-      - run: gcloud --quiet auth configure-docker
 
       - name: Build app
         run: docker build --tag "gcr.io/$PROJECT_ID/$APP-IMAGE:$BRANCH-$GITHUB_SHA" ./todo-app
